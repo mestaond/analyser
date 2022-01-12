@@ -110,7 +110,7 @@ def pdf_with_graph(data: pandas.DataFrame, limit: str, category_text: str, filte
         pdf.ln(5)
     timestamp = datetime.datetime.now()
     timestamp_str = timestamp.strftime("%d-%b-%Y %H:%M:%S")
-    pdf.write(5, 'Exported at: ' + timestamp_str)
+    pdf.write(5, 'Exportováno: ' + timestamp_str)
 
     with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmpfile:
         pdf.add_page(orientation='L')
