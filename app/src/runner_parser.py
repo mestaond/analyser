@@ -55,6 +55,11 @@ def load_event_entries(reg_no: str, year: str):
     return entries, runner_info, user_id
 
 
+def date_to_str(x: str) -> str:
+    p = x.split('.')
+    return p[2] + '.' + p[1] + '.' + p[0]
+
+
 @st.cache
 def get_all_standings(entries: pandas.DataFrame, events: pandas.DataFrame, user_id: str):
     """Fills ``entries`` DataFrame with results of all events\n
@@ -63,8 +68,9 @@ def get_all_standings(entries: pandas.DataFrame, events: pandas.DataFrame, user_
     entries['Place'] = entries.apply(lambda row: get_place(row['EventID'], row['ClassID'], user_id), axis=1)
     entries.rename(columns={'ClassDesc': 'Class'}, inplace=True)
     entries = get_two_day_champ_data(entries, events, user_id)
+    entries['DateStr'] = entries['Date'].apply(lambda x: date_to_str(x))
+    entries.sort_values(by=['DateStr', 'Name'], inplace=True)
     entries = entries[['Date', 'Name', 'Discipline', 'Level', 'Class', 'Place']]
-    entries.sort_values(by=['Date', 'Name'], inplace=True)
     return entries
 
 
