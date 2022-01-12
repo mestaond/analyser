@@ -106,7 +106,7 @@ def main():
     st.set_page_config(page_title='ORIS data analyser', layout='wide', initial_sidebar_state='auto')
     st.title('ORIS data analyser')
 
-    st.sidebar.title("Select analyser mode")
+    st.sidebar.title("Vyberte režim analýzy")
     mode = st.sidebar.selectbox(
         "Režim analýzy", options=['Analýza výsledků', 'Analýza závodníka']
     )
