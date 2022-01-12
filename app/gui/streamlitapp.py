@@ -86,7 +86,7 @@ def splits_layout():
         levels = st.sidebar.multiselect(
             "Úroveň závodu", options=constants.EVENT_LEVELS
         )
-        all_sports = st.sidebar.checkbox("Zobrazit všechny sporty (ne jen pěší OB)", value=False)
+        all_sports = st.sidebar.checkbox("Zobrazit všechny sporty (ne jen OB)", value=False)
         all_events = st.sidebar.checkbox("Zobrazit neoficiální akce", value=False)
     return category, event, event_year, mask, levels, all_sports, all_events
 
