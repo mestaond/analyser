@@ -14,7 +14,7 @@ def load_splits(class_id: str):
     with urllib.request.urlopen(constants.URL_SPLITS + class_id) as url:
         data = json.loads(url.read().decode())
         if data['Status'] != 'OK' or not data['Data']:
-            return 'category ID ' + class_id
+            return 'kategorie ' + class_id
         splits = data['Data']['Splits']
 
     df = pd.DataFrame.from_dict(splits, orient='index')
@@ -37,16 +37,17 @@ def load_categories(event_id: str):
     with urllib.request.urlopen(constants.URL_CATEGORIES + event_id) as url:
         data = json.loads(url.read().decode())
         if data['Status'] != 'OK':
-            return 'event ID ' + event_id, [], {}
+            return 'ID závodu ' + event_id, [], {}
         if not data['Data']['Discipline']['ID'] in constants.SUPPORTED_DISCIPLINES_ID:
             return 'unsupported discipline: ' + data['Data']['Discipline']['NameCZ'], [], {}
         classes = data['Data']['Classes']
 
     event_info = []
     cols = ['Name', 'Date', 'Place', 'Map']
-    for i in cols:
-        event_info.append(i + ': ' + data['Data'][i])
-    event_info.append('Discipline: ' + data['Data']['Discipline']['NameCZ'])
+    legend = ['Jméno', 'Datum', 'Místo', 'Mapa']
+    for i in range(0,len(cols)):
+        event_info.append(legend[i] + ': ' + data['Data'][cols[i]])
+    event_info.append('Disciplína: ' + data['Data']['Discipline']['NameCZ'])
     df = pd.DataFrame.from_dict(classes, orient='index')
     categories = df[['ID', 'Name']].copy()
     df.set_index('ID', inplace=True)
