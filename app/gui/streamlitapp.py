@@ -62,7 +62,7 @@ def splits_handle_error(error: str, mask: str):
         st.markdown("Nepodporováno: __" + error + "__")
     else:
         st.markdown("Chyba: {__" + error + "__} je neplatné")
-        if 'category' in error:
+        if 'kategorie' in error:
             st.markdown("_Možná je v názvu kategorie překlep_")
 
 
