@@ -88,7 +88,7 @@ def load_events_parse_data(year: str, mask: str, levels: list, all_sports: bool,
     return values
 
 
-def reformat_date(date: str) -> datetime:
+def reformat_date(x: str) -> datetime:
     """Transforms string text in date value"""
     p = x.split('-')
     return datetime.date(int(p[0]), int(p[1]), int(p[1]))
