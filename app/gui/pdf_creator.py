@@ -88,8 +88,8 @@ def pdf_with_graph(data: pandas.DataFrame, limit: str, category_text: str, filte
     One section displays total time, the other relative split time"""
     pdf = FPDF()
     pdf.add_page(orientation='P')
-#     pdf.image('./app/fonts/Orienteering_symbol.png', 60, 20, 100)
-#     pdf.ln(120)
+    pdf.image('./app/fonts/Orienteering_symbol.png', 60, 20, 100)
+    pdf.ln(120)
     pdf.add_font('DejaVu', '', './app/fonts/DejaVuSansMono.ttf', uni=True)
     pdf.add_font('DejaVu', 'B', './app/fonts/DejaVuSansMono-Bold.ttf', uni=True)
     pdf.add_font('DejaVu', 'CB', './app/fonts/DejaVuSansCondensed-Bold.ttf', uni=True)
