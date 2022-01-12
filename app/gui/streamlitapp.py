@@ -117,7 +117,7 @@ def main():
         if event != '' and category != '':
             ctg = loader.get_category_id_from_name(category, event)
             if 'event' in ctg:
-                st.markdown("Chyba: {__" + error + "__} je neplatné")
+                st.markdown("Chyba: {__" + category + "__} je neplatné")
             if ctg != 'err':
                 category = ctg
         load_mode, entity = loader.load_splits(category, event, event_year, mask, levels, all_sports, all_events)
@@ -136,17 +136,17 @@ def main():
                     st.markdown('_Vyberte ID závodu_')
                 st.table(entity)
     else:
-        st.sidebar.title("Insert runner registration number")
-        reg_no = st.sidebar.text_input("RegNo (format XXX1111, where XXX is club shortcut):")
+        st.sidebar.title("Zadejte registrační číslo")
+        reg_no = st.sidebar.text_input("RegNo (formát XYZ1234):")
         years = st.sidebar.selectbox(
-            "Select year to analyze", options=constants.YEARS
+            "Sezóna", options=constants.YEARS
         )
         if reg_no == '':
-            st.markdown("_Insert registration number_")
-            st.markdown("_Note: Due to multi-request calling may data loading take little longer (depends on number of events, in average 1s per event)_")
+            st.markdown("_Zadejte registrační číslo_")
+            st.markdown("_Pozn.: Načítání stránky bude trvat delší dobu (záleží na počtu závodů, v průměru 1s na závod)_")
         else:
             entity = loader.load_runner(reg_no, years)
             if type(entity) is str:
-                st.markdown("Entity error: {__" + entity + "__} is invalid")
+                st.markdown("Chyba: {__" + entity + "__} je neplatné")
             else:
                 load_page_runner(entity)
