@@ -81,11 +81,11 @@ def get_plotly_splits_absolute(splits: pandas.DataFrame, limit: str, filtered: l
     fig = get_plotly_fill_graph(data, runners, names)
 
     fig.update_layout(
-        title="Analysis - total time from start",
+        title="Analýza - celkový čas od startu",
         width=constants.GRAPH_WIDTH,
         height=constants.GRAPH_HEIGHT,
-        xaxis_title="Control",
-        yaxis_title="Time (hh:mm:ss)",
+        xaxis_title="Kontrola",
+        yaxis_title="Čas (hh:mm:ss)",
         yaxis_type='date',
         yaxis_tickformat='%H:%M:%S',
         hovermode='x',
@@ -106,11 +106,11 @@ def get_plotly_splits_relative(splits: pandas.DataFrame, limit: str, filtered: l
     fig = get_plotly_fill_graph(data, runners, names)
 
     fig.update_layout(
-        title="Analysis - relative loss to leader",
+        title="Analýza - ztráta na průběžně prvního",
         width=constants.GRAPH_WIDTH,
         height=constants.GRAPH_HEIGHT,
-        xaxis_title="Control",
-        yaxis_title="Loss to leader (+hh:mm:ss)",
+        xaxis_title="Kontrola",
+        yaxis_title="Ztráta (+hh:mm:ss)",
         yaxis_tickformat='%H:%M:%S',
         hovermode='x',
         showlegend=True
@@ -138,12 +138,12 @@ def get_plotly_runner_event_level(events: pandas.DataFrame, level: int) -> go.Fi
                 hovertext=disciplines[r]['Name'] + '<br>' + disciplines[r]['Class']
             ))
     fig.update_layout(
-        title="Results by disciplines on level " + constants.GRAPH_LEVEL_TEXT[level],
+        title="Výsledky dle disciplíny na úrovni " + constants.GRAPH_LEVEL_TEXT[level],
         width=constants.GRAPH_WIDTH,
         height=constants.GRAPH_HEIGHT,
-        xaxis_title="Date",
+        xaxis_title="Datum",
         xaxis_tickformat='%d.%m.%Y',
-        yaxis_title="Place",
+        yaxis_title="Umístění",
         showlegend=True
     )
     return fig
