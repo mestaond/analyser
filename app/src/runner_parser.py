@@ -33,9 +33,9 @@ def load_event_entries(reg_no: str, year: str):
     with urllib.request.urlopen(constants.URL_USER_ID + reg_no) as url:
         data = json.loads(url.read().decode())
         if data['Status'] != 'OK' or not data['Data']:
-            return 'registration number ' + reg_no.upper(), [], ''
-        runner_info = ["Name: __" + data['Data']['FirstName'] + " " + data['Data']['LastName'] + "__",
-                       "Registration number: __" + reg_no.upper() + "__", "Season: __" + year + "__"]
+            return 'registrační číslo ' + reg_no.upper(), [], ''
+        runner_info = ["Jméno: __" + data['Data']['FirstName'] + " " + data['Data']['LastName'] + "__",
+                       "Registrační číslo: __" + reg_no.upper() + "__", "Sezóna: __" + year + "__"]
         user_id = data['Data']['ID']
 
     values = {'format': 'json',
