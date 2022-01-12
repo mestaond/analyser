@@ -95,7 +95,7 @@ def pdf_with_graph(data: pandas.DataFrame, limit: str, category_text: str, filte
     pdf.add_font('DejaVu', 'CB', './app/fonts/DejaVuSansCondensed-Bold.ttf', uni=True)
     pdf.set_fill_color(255, 255, 128)
     pdf.set_font('DejaVu', '', 20)
-    pdf.write(10, "Split analysis")
+    pdf.write(10, "Analýza výsledků")
     pdf.ln(10)
     pdf.ln(10)
     pdf.set_font('DejaVu', '', 14)
