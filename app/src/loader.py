@@ -23,19 +23,20 @@ def load_splits(category: str, event_id: str, event_year: str, mask: str, levels
         sapp.event_categories = categories
         return constants.MODE_CATEGORIES, entity
     else:
-        return load_event_calendar(event_year, mask, levels, all_sports, all_events)
+        return load_event_calendar(event_year, mask, levels, all_sports, all_events, True)
 
 
 @st.cache
-def load_event_calendar(event_year: str, mask: str, levels: list, all_sports: bool, all_events: bool):
+def load_event_calendar(event_year: str, mask: str, levels: list, all_sports: bool, all_events: bool, drop_date: bool):
     """Parses all given parameters to json and then calls request with these parameters\n
     :returns load_mode, DataFrame/error string"""
-    if event_year != '':
-        values = splits_parser.load_events_parse_data(event_year, mask, levels, all_sports, all_events)
-        return constants.MODE_EVENTS, splits_parser.load_events(values)
-    else:
-        values = splits_parser.load_events_parse_data(str(date.today().year), mask, levels, all_sports, all_events)
-        return constants.MODE_EVENTS, splits_parser.load_events(values)
+    if event_year == '':
+        event_year = (str(date.today().year))
+    values = splits_parser.load_events_parse_data(event_year, mask, levels, all_sports, all_events)
+    data = splits_parser.load_events(values)
+    if drop_date:
+        data.drop('DateStr', axis=1, inplace=True)
+    return constants.MODE_EVENTS, data
 
 
 def load_runner(reg_no: str, year: str):

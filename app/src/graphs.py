@@ -142,7 +142,8 @@ def get_plotly_runner_event_level(events: pandas.DataFrame, level: int) -> go.Fi
         width=constants.GRAPH_WIDTH,
         height=constants.GRAPH_HEIGHT,
         xaxis_title="Datum",
-        xaxis_tickformat='%d.%m.%Y',
+        xaxis_tickformat='%d.%m',
+        xaxis_tickangle=45,
         yaxis_title="Umístění",
         showlegend=True
     )

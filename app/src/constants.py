@@ -9,7 +9,6 @@ SUPPORTED_DISCIPLINES = ['KL', 'KT', 'SP', 'NOB']
 LEVEL_SHORTCUTS = [['ČP', 'MČR'], ['ŽB'], ['OŽ', 'OM', 'E', 'OF']]
 
 # URL adresses
-URL_SPLITS = 'https://oris.orientacnisporty.cz/API/?format=json&method=getSplits&classid='
 URL_CATEGORIES = 'https://oris.orientacnisporty.cz/API/?format=json&method=getEvent&id='
 URL_USER_ID = 'https://oris.orientacnisporty.cz/API/?format=json&method=getUser&rgnum='
 URL_RESULTS = 'https://oris.orientacnisporty.cz/API/?format=json&method=getEventResults&eventid='
@@ -24,7 +23,7 @@ MODE_EVENTS = 2
 GRAPH_HEIGHT = 600
 GRAPH_WIDTH = 1000
 GRAPH_LEGEND_SIZE = 22
-GRAPH_RUNNER_DISCIPLINES = ['Sprint', 'Middle', 'Long']
+GRAPH_RUNNER_DISCIPLINES = ['Sprint', 'Krátká', 'Klasika']
 GRAPH_LEVEL_TEXT = ['<b>MČR & Český Pohár & Žebříček A</b>', '<b>Žebříček B</b>', '<b>Oblastní závody & Etapové</b>']
 
 # Pdf export settings
