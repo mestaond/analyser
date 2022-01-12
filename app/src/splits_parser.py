@@ -3,7 +3,6 @@ import pandas as pd
 from app.src import constants
 import urllib.request
 import urllib.parse
-import datetime
 import json
 import streamlit as st
 
@@ -88,10 +87,10 @@ def load_events_parse_data(year: str, mask: str, levels: list, all_sports: bool,
     return values
 
 
-def reformat_date(x: str) -> datetime:
+def reformat_date(x: str) -> str:
     """Transforms string text in date value"""
     p = x.split('-')
-    return datetime.date(int(p[0]), int(p[1]), int(p[1]))
+    return p[2] + '.' + p[1] + '.' + p[0]
 
 
 def load_events(values: dict):
