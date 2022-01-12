@@ -11,10 +11,16 @@ import streamlit as st
 def load_splits(class_id: str):
     """Sends get request method getSplits and parses data from json to DataFrame\n
     :returns DataFrame or error string"""
-    with urllib.request.urlopen(constants.URL_SPLITS + class_id) as url:
+    values = {'format': 'json',
+              'method': 'getSplits',
+              'classid': class_id}
+    data = urllib.parse.urlencode(values)
+    data = data.encode('utf-8')
+    request = urllib.request.Request(constants.URL, data)
+    with urllib.request.urlopen(request) as url:
         data = json.loads(url.read().decode())
         if data['Status'] != 'OK' or not data['Data']:
-            return 'kategorie ' + class_id
+            return 'ID kategorie ' + class_id
         splits = data['Data']['Splits']
 
     df = pd.DataFrame.from_dict(splits, orient='index')
