@@ -20,8 +20,8 @@ def to_time(x: str) -> datetime:
 
 def to_date(x: str) -> datetime:
     """Transforms string text in date value"""
-    p = x.split('-')
-    return datetime.date(int(p[0]), int(p[1]), int(p[2]))
+    p = x.split('.')
+    return datetime.date(int(p[2]), int(p[1]), int(p[0]))
 
 
 def to_relative(x: datetime, leader: datetime) -> datetime:
