@@ -18,7 +18,7 @@ def create_download_link(val, filename):
     """Simple function, that creates link for downloading file
     Not my work, borrowed from StackOverflow"""
     b64 = base64.b64encode(val)
-    return f'<a href="data:application/octet-stream;base64,{b64.decode()}" download="{filename}.pdf">Download file</a>'
+    return f'<a href="data:application/octet-stream;base64,{b64.decode()}" download="{filename}.pdf">Stáhnout</a>'
 
 
 def load_page_splits(entity: pandas.DataFrame, category: str):
@@ -29,25 +29,25 @@ def load_page_splits(entity: pandas.DataFrame, category: str):
         for i in event_info:
             if i != '':
                 st.write(i)
-        category_text = 'Category: ' + event_categories[category]
-        st.markdown('Category: __' + event_categories[category] + '__')
+        category_text = 'Kategorie: ' + event_categories[category]
+        st.markdown('Kategorie: __' + event_categories[category] + '__')
     limit = st.select_slider(
-        'Competitors limit', options=constants.RUNNERS_LIMIT
+        'Max počet závodníků', options=constants.RUNNERS_LIMIT
     )
     runners = st.multiselect(
-        "Select runners for comparing with winner", options=category_runners
+        "Výběr závodníků k porovnání s vítězem", options=category_runners
     )
-    show_relative = st.checkbox("Show relative compare", value=False)
+    show_relative = st.checkbox("Relativní porovnání", value=False)
 
     filtered = loader.filter_runner_id(runners)
     if filtered:
         limit = 'none'
     st.write(loader.load_split_graphs(entity, show_relative, limit, filtered))
-    st.write('Total times and standings')
+    st.write('Celkové časy a umístění')
     st.dataframe(loader.crop_and_style(entity, limit, filtered, False))
-    st.write('Split times and standings')
+    st.write('Časy a umístění podle mezičasů')
     st.dataframe(loader.crop_and_style(entity, limit, filtered, True))
-    export_as_pdf = st.button("Export Analysis")
+    export_as_pdf = st.button("Exportovat")
     if export_as_pdf:
         pdf = pdf_creator.pdf_with_graph(entity, limit, category_text, filtered)
         html = create_download_link(pdf.output(dest="S").encode("latin-1"), "analysis")
@@ -56,38 +56,38 @@ def load_page_splits(entity: pandas.DataFrame, category: str):
 
 def splits_handle_error(error: str, mask: str):
     if error == 'not found':
-        st.markdown("No results for mask {__" + mask + "__} found")
-        st.markdown("_Maybe filter conditions are too strict_")
+        st.markdown("Žádné výsledky pro filtr {__" + mask + "__} nenalezeny")
+        st.markdown("_Možná jsou podmínky příliš přísné_")
     elif 'unsupported' in error:
-        st.markdown("Not possible: __" + error + "__")
+        st.markdown("Nepodporováno: __" + error + "__")
     else:
-        st.markdown("Entity error: {__" + error + "__} is invalid")
+        st.markdown("Chyba: {__" + error + "__} je neplatné")
         if 'category' in error:
-            st.markdown("_Maybe you misspelled category ID number or haven't filled event ID when using category name_")
+            st.markdown("_Možná je v názvu kategorie překlep_")
 
 
 def splits_layout():
     """Creates sidebar layout for split analysis"""
-    st.sidebar.title("Insert category name...")
-    category = st.sidebar.text_input("Category name:")
-    st.sidebar.title("...and insert event ID...")
-    event = st.sidebar.text_input("Event ID:")
-    st.sidebar.title("...or select year")
+    st.sidebar.title("Zadejte jméno kategorie...")
+    category = st.sidebar.text_input("Jméno kategorie:")
+    st.sidebar.title("...a zadejte ID závodu...")
+    event = st.sidebar.text_input("ID závodu:")
+    st.sidebar.title("...nebo vyberte sezónu")
     event_year = st.sidebar.selectbox(
-        "Select year of event", options=constants.YEARS
+        "Vyberte sezónu", options=constants.YEARS
     )
-    show_advanced = st.sidebar.checkbox("Show advanced filtering", value=False)
+    show_advanced = st.sidebar.checkbox("Pokročilé filtry", value=False)
     mask = ''
     levels = []
     all_sports = False
     all_events = False
     if show_advanced:
-        mask = st.sidebar.text_input("Event name mask:")
+        mask = st.sidebar.text_input("Jméno závodu obsahuje:")
         levels = st.sidebar.multiselect(
-            "Select event level", options=constants.EVENT_LEVELS
+            "Úroveň závodu", options=constants.EVENT_LEVELS
         )
-        all_sports = st.sidebar.checkbox("Show all sports (not just Foot-O)", value=False)
-        all_events = st.sidebar.checkbox("Show unofficial events", value=False)
+        all_sports = st.sidebar.checkbox("Zobrazit všechny sporty (ne jen pěší OB)", value=False)
+        all_events = st.sidebar.checkbox("Zobrazit neoficiální akce", value=False)
     return category, event, event_year, mask, levels, all_sports, all_events
 
 
@@ -108,16 +108,16 @@ def main():
 
     st.sidebar.title("Select analyser mode")
     mode = st.sidebar.selectbox(
-        "Select analyser mode", options=['Split Analyser', 'Runner Analyser']
+        "Režim analýzy", options=['Analýza výsledků', 'Analýza závodníka']
     )
     st.sidebar.markdown("""---""")
-    if mode == 'Split Analyser':
+    if mode == 'Analýza výsledků':
         category, event, event_year, mask, levels, all_sports, all_events = splits_layout()
 
         if event != '' and category != '':
             ctg = loader.get_category_id_from_name(category, event)
             if 'event' in ctg:
-                st.markdown("Entity error: {__" + ctg + "__} is invalid")
+                st.markdown("Chyba: {__" + error + "__} je neplatné")
             if ctg != 'err':
                 category = ctg
         load_mode, entity = loader.load_splits(category, event, event_year, mask, levels, all_sports, all_events)
@@ -131,9 +131,9 @@ def main():
                     for i in event_info:
                         if i != '':
                             st.write(i)
-                    st.markdown('_Select category name_')
+                    st.markdown('_Vyberte kategorii_')
                 else:
-                    st.markdown('_Select event ID_')
+                    st.markdown('_Vyberte ID závodu_')
                 st.table(entity)
     else:
         st.sidebar.title("Insert runner registration number")
