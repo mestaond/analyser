@@ -87,6 +87,11 @@ def load_events_parse_data(year: str, mask: str, levels: list, all_sports: bool,
     return values
 
 
+def reformat_date(date: str) -> str:
+    arr = date.split('-')
+    return arr[2] + '.' + arr[1] + '.' + arr[0]
+
+
 def load_events(values: dict):
     """Sends get request method getEventList and parses data from json to DataFrame\n
     Request is encoded in utf-8, because ``values`` may contain Czech alphabet symbols\n
@@ -110,5 +115,6 @@ def load_events(values: dict):
     df['Discipline'] = df['Discipline'].apply(lambda x: x['ShortName'])
     df['Level'] = df['Level'].apply(lambda x: x['ShortName'])
     df = df[df.Discipline.isin(constants.SUPPORTED_DISCIPLINES)]
+    df['Date'] = df['Date'].apply(lambda x: reformat_date(x))
     df.reset_index(level=0, inplace=True)
     return df[['ID', 'Date', 'Name', 'Discipline', 'Level', 'Region']]
