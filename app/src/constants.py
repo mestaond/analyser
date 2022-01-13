@@ -1,7 +1,7 @@
 # Selectbox options
 YEARS = ['2021', '2020', '2019', '2018', '2017', '2016', '2015', '2014', '2013']
 EVENT_LEVELS = ['1: MČR', '8: ČP + ŽA', '3: ŽB', '11: OM', '4: OŽ', '5: E', '14: OF', '6: OST ( + zobrazit neoficiální závody)']
-RUNNERS_LIMIT = ['none', '3', '4', '5', '6', '8', '10', '12', '14', '16', '18', '20', '25', '30']
+RUNNERS_LIMIT = ['none', '3', '4', '5', '6', '7', '8', '9', '10', '12', '14', '16', '18', '20', '25', '30']
 
 # Filters
 SUPPORTED_DISCIPLINES_ID = ['1', '2', '3', '9']
