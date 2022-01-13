@@ -51,8 +51,12 @@ def load_categories(event_id: str):
     event_info = []
     cols = ['Name', 'Date', 'Place', 'Map']
     legend = ['Jméno', 'Datum', 'Místo', 'Mapa']
-    for i in range(0,len(cols)):
-        event_info.append(legend[i] + ': ' + data['Data'][cols[i]])
+    for i in range(0, len(cols)):
+        if cols[i] == 'Date':
+            x = data['Data'][cols[i]].split('-')
+            event_info.append(legend[i] + ': ' + x[2] + '.' + x[1] + '.' + x[0])
+        else:
+            event_info.append(legend[i] + ': ' + data['Data'][cols[i]])
     event_info.append('Disciplína: ' + data['Data']['Discipline']['NameCZ'])
     df = pd.DataFrame.from_dict(classes, orient='index')
     categories = df[['ID', 'Name']].copy()

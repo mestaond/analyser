@@ -22,8 +22,8 @@ def cut_graph_limit(limit: str, filtered: list) -> str:
 def get_relative_data(data: pandas.DataFrame, show_relative: bool) -> (pandas.DataFrame, str):
     """Reduces dataframe to splits_only or total_time_only and with it return appropriate header"""
     if show_relative:
-        return loader.crop_dataframe(data, True), 'Split times and standings'
-    return loader.crop_dataframe(data, False), 'Total times and standings'
+        return loader.crop_dataframe(data, True), 'Čas a umístění na mezičasech'
+    return loader.crop_dataframe(data, False), 'Celkový čas a umístění'
 
 
 def add_table(pdf: fpdf.FPDF, data: pandas.DataFrame, show_relative: bool, to_color: list):
@@ -109,7 +109,7 @@ def pdf_with_graph(data: pandas.DataFrame, limit: str, category_text: str, filte
         pdf.ln(5)
         pdf.ln(5)
     timestamp = datetime.datetime.now()
-    timestamp_str = timestamp.strftime("%d-%b-%Y %H:%M:%S")
+    timestamp_str = timestamp.strftime("%d.%m.%Y %H:%M:%S")
     pdf.write(5, 'Exportováno: ' + timestamp_str)
 
     with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmpfile:
