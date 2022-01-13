@@ -34,8 +34,11 @@ def load_event_calendar(event_year: str, mask: str, levels: list, all_sports: bo
         event_year = (str(date.today().year))
     values = splits_parser.load_events_parse_data(event_year, mask, levels, all_sports, all_events)
     data = splits_parser.load_events(values)
-    if drop_date and type(data) is pandas.DataFrame:
-        data.drop('DateStr', axis=1, inplace=True)
+    if type(data) is pandas.DataFrame:
+        if drop_date:
+            data.drop('DateStr', axis=1, inplace=True)
+        if not all_sports:
+            data.drop('Sport', axis=1, inplace=True)
     return constants.MODE_EVENTS, data
 
 
@@ -55,9 +58,11 @@ def get_category_id_from_name(category: str, event_id: str) -> str:
             return ret
     key_list = list(sapp.event_categories.keys())
     val_list = list(sapp.event_categories.values())
+    for i in range(len(val_list)):
+        val_list[i] = val_list[i].upper()
 
     try:
-        position = val_list.index(category)
+        position = val_list.index(category.upper())
         return key_list[position]
     except ValueError:
         return 'err'

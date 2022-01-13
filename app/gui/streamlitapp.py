@@ -38,7 +38,7 @@ def load_page_splits(entity: pandas.DataFrame, category: str):
         "Výběr závodníků k porovnání s vítězem", options=category_runners
     )
     st.markdown("__Zobrazení grafu__")
-    show_relative = st.checkbox("Relativní porovnání dle ztráty", value=False)
+    show_relative = st.checkbox("Relativní porovnání dle ztráty", value=False, help="Výchozí zobrazení dle času od startu")
 
     filtered = loader.filter_runner_id(runners)
     if filtered:
@@ -48,10 +48,10 @@ def load_page_splits(entity: pandas.DataFrame, category: str):
     st.dataframe(loader.crop_and_style(entity, limit, filtered, False))
     st.write('Časy a umístění podle mezičasů')
     st.dataframe(loader.crop_and_style(entity, limit, filtered, True))
-    export_as_pdf = st.button("Exportovat")
+    export_as_pdf = st.button("Exportovat", help="Vygeneruje se pdf, které je poté nutné stáhnout kliknutím na odkaz")
     if export_as_pdf:
         pdf = pdf_creator.pdf_with_graph(entity, limit, category_text, filtered)
-        html = create_download_link(pdf.output(dest="S").encode("latin-1"), "analysis")
+        html = create_download_link(pdf.output(dest="S").encode("latin-1"), "analysis_" + event_id + "_" + event_categories[category])
         st.markdown(html, unsafe_allow_html=True)
 
 
@@ -62,9 +62,11 @@ def splits_handle_error(error: str, mask: str):
     elif 'unsupported' in error:
         st.error("Nepodporováno: " + error + "")
     else:
-        st.error("Chyba: { " + error + " } je neplatné")
+        show_error(error)
         if 'kategorie' in error:
             st.markdown("_Možná je v názvu kategorie překlep_")
+            st.write("Platné kategorie:")
+            st.table(event_categories.values())
 
 
 def splits_layout():
@@ -103,6 +105,10 @@ def load_page_runner(entity: pandas.DataFrame):
             st.write(graph)
 
 
+def show_error(error: str):
+    st.error("Chyba: [ " + error + " ] je neplatné")
+
+
 def main():
     st.set_page_config(page_title='ORIS data analyser', layout='wide', initial_sidebar_state='auto')
     st.title('ORIS data analyser')
@@ -118,7 +124,7 @@ def main():
         if event != '' and category != '':
             ctg = loader.get_category_id_from_name(category, event)
             if 'event' in ctg:
-                st.error("Chyba: { " + category + " } je neplatné")
+                show_error(category)
             if ctg != 'err':
                 category = ctg
         load_mode, entity = loader.load_splits(category, event, event_year, mask, levels, all_sports, all_events)
@@ -148,6 +154,10 @@ def main():
         else:
             entity = loader.load_runner(reg_no, years)
             if type(entity) is str:
-                st.error("Chyba: { " + entity + " } je neplatné")
+                show_error(entity)
             else:
                 load_page_runner(entity)
+
+    st.markdown("\n")
+    st.markdown("_Autor: Ondřej Měšťan (semetrální práce z předmětu BI-PYT na ČVUT FIT)_")
+    st.markdown(f'_Chyby a připomínky pište na mail: <a href="mailto:mestanondrej@seznam.cz">mestanondrej@seznam.cz</a>_', unsafe_allow_html=True)

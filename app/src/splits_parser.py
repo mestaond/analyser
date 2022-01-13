@@ -118,9 +118,10 @@ def load_events(values: dict):
     if df.empty:
         return 'not found'
     df['Discipline'] = df['Discipline'].apply(lambda x: x['ShortName'])
-    df['Level'] = df['Level'].apply(lambda x: x['ShortName'])
     df = df[df.Discipline.isin(constants.SUPPORTED_DISCIPLINES)]
+    df['Level'] = df['Level'].apply(lambda x: x['ShortName'])
+    df['Sport'] = df['Sport'].apply(lambda x: x['NameCZ'])
     df['DateStr'] = df['Date']
     df['Date'] = df['Date'].apply(lambda x: reformat_date(x))
     df.reset_index(level=0, inplace=True)
-    return df[['ID', 'Date', 'Name', 'Discipline', 'Level', 'Region', 'DateStr']]
+    return df[['ID', 'Date', 'Name', 'Discipline', 'Level', 'Region', 'Sport', 'DateStr']]
