@@ -37,7 +37,8 @@ def load_page_splits(entity: pandas.DataFrame, category: str):
     runners = st.multiselect(
         "Výběr závodníků k porovnání s vítězem", options=category_runners
     )
-    show_relative = st.checkbox("Relativní porovnání", value=False)
+    st.markdown("__Zobrazení grafu__")
+    show_relative = st.checkbox("Relativní porovnání dle ztráty", value=False)
 
     filtered = loader.filter_runner_id(runners)
     if filtered:
@@ -56,23 +57,23 @@ def load_page_splits(entity: pandas.DataFrame, category: str):
 
 def splits_handle_error(error: str, mask: str):
     if error == 'not found':
-        st.markdown("Žádné výsledky pro filtr {__" + mask + "__} nenalezeny")
+        st.error("Žádné výsledky pro filtr { " + mask + " } nenalezeny")
         st.markdown("_Možná jsou podmínky příliš přísné_")
     elif 'unsupported' in error:
-        st.markdown("Nepodporováno: __" + error + "__")
+        st.error("Nepodporováno: " + error + "")
     else:
-        st.markdown("Chyba: {__" + error + "__} je neplatné")
+        st.error("Chyba: { " + error + " } je neplatné")
         if 'kategorie' in error:
             st.markdown("_Možná je v názvu kategorie překlep_")
 
 
 def splits_layout():
     """Creates sidebar layout for split analysis"""
-    st.sidebar.title("Zadejte jméno kategorie...")
+    st.sidebar.header("Zadejte jméno kategorie...")
     category = st.sidebar.text_input("Jméno kategorie:")
-    st.sidebar.title("...a zadejte ID závodu...")
+    st.sidebar.header("...a zadejte ID závodu...")
     event = st.sidebar.text_input("ID závodu:")
-    st.sidebar.title("...nebo vyberte sezónu")
+    st.sidebar.header("...nebo vyberte sezónu")
     event_year = st.sidebar.selectbox(
         "Vyberte sezónu", options=constants.YEARS
     )
@@ -117,7 +118,7 @@ def main():
         if event != '' and category != '':
             ctg = loader.get_category_id_from_name(category, event)
             if 'event' in ctg:
-                st.markdown("Chyba: {__" + category + "__} je neplatné")
+                st.error("Chyba: { " + category + " } je neplatné")
             if ctg != 'err':
                 category = ctg
         load_mode, entity = loader.load_splits(category, event, event_year, mask, levels, all_sports, all_events)
@@ -131,22 +132,22 @@ def main():
                     for i in event_info:
                         if i != '':
                             st.write(i)
-                    st.markdown('_Vyberte kategorii_')
+                    st.info('Vyberte kategorii')
                 else:
-                    st.markdown('_Vyberte ID závodu_')
+                    st.info('Vyberte ID závodu')
                 st.table(entity)
     else:
-        st.sidebar.title("Zadejte registrační číslo")
+        st.sidebar.header("Zadejte registrační číslo")
         reg_no = st.sidebar.text_input("RegNo (formát XYZ1234):")
         years = st.sidebar.selectbox(
             "Sezóna", options=constants.YEARS
         )
         if reg_no == '':
-            st.markdown("_Zadejte registrační číslo_")
+            st.info("Zadejte registrační číslo")
             st.markdown("_Pozn.: Načítání stránky bude trvat delší dobu (záleží na počtu závodů, v průměru 1s na závod)_")
         else:
             entity = loader.load_runner(reg_no, years)
             if type(entity) is str:
-                st.markdown("Chyba: {__" + entity + "__} je neplatné")
+                st.error("Chyba: { " + entity + " } je neplatné")
             else:
                 load_page_runner(entity)

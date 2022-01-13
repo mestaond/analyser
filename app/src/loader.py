@@ -34,7 +34,7 @@ def load_event_calendar(event_year: str, mask: str, levels: list, all_sports: bo
         event_year = (str(date.today().year))
     values = splits_parser.load_events_parse_data(event_year, mask, levels, all_sports, all_events)
     data = splits_parser.load_events(values)
-    if drop_date:
+    if drop_date and type(data) is pandas.DataFrame:
         data.drop('DateStr', axis=1, inplace=True)
     return constants.MODE_EVENTS, data
 
