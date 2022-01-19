@@ -84,10 +84,13 @@ def get_two_day_champ_data(entries: pandas.DataFrame, events: pandas.DataFrame, 
 def get_finals_results(row, events: pandas.DataFrame, user_id: str):
     """For qualification event finds appropriate final event and result"""
     final = events.loc[((events['Discipline'] == row['Discipline']) & (events['Name'].str.contains("finále")))]
-    event_id = final.index.to_list()[0]
-    row['EventID'] = event_id
-    row['Name'] = final.loc[event_id, 'Name']
-    row['Date'] = final.loc[event_id, 'Date']
+    if not final.empty:
+        event_id = final.index.to_list()[0]
+        row['EventID'] = event_id
+        row['Name'] = final.loc[event_id, 'Name']
+        row['Date'] = final.loc[event_id, 'Date']
+    else:
+        event_id = row['EventID']
     ctg, tmp1, tmp2 = splits_parser.load_categories(event_id)
     ctg = ctg[ctg['Name'].str.contains(row['Class'])].reset_index(level=0)
     classes = ctg['ID'].to_list()

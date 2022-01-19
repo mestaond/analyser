@@ -78,10 +78,9 @@ def splits_handle_error(error: str, mask: str):
 
 def splits_layout():
     """Creates sidebar layout for split analysis"""
-    st.sidebar.header("Zadejte jméno kategorie...")
+    st.sidebar.header("Zadejte ID závodu a kategorii...")
+    event = st.sidebar.text_input("ID závodu:", help="Po zadání ID se zobrazí kategorie")
     category = st.sidebar.text_input("Jméno kategorie:")
-    st.sidebar.header("...a zadejte ID závodu...")
-    event = st.sidebar.text_input("ID závodu:")
     st.sidebar.header("...nebo vyberte sezónu")
     event_year = st.sidebar.selectbox(
         "Sezóna:", options=constants.YEARS
@@ -97,7 +96,7 @@ def splits_layout():
         levels = st.sidebar.multiselect(
             "Úroveň závodu:", options=constants.EVENT_LEVELS
         )
-        all_sports = st.sidebar.checkbox("Zobrazit všechny sporty (ne jen OB)", value=False)
+        all_sports = st.sidebar.checkbox("Zobrazit všechny sporty", value=False, help="Výchozí nastavení je pouze OB")
         all_events = st.sidebar.checkbox("Zobrazit neoficiální akce", value=False)
     return category, event, event_year, mask, levels, all_sports, all_events
 
@@ -151,21 +150,25 @@ def main():
                     st.info('Vyberte ID závodu')
                 st.table(entity)
     else:
-        st.sidebar.header("Zadejte registrační číslo")
-        reg_no = st.sidebar.text_input("Registrační číslo:", help="Formát ABC1234, kde ABC je zkratka klubu")
+        st.sidebar.header("Vyberte rok a zadejte registrační číslo")
         years = st.sidebar.selectbox(
             "Sezóna", options=constants.YEARS
         )
+        reg_no = st.sidebar.text_input("Registrační číslo:", help="Formát ABC1234, kde ABC je zkratka klubu")
         if reg_no == '':
             st.info("Zadejte registrační číslo")
             st.markdown("_Pozn.: Načítání stránky bude trvat delší dobu (záleží na počtu závodů, v průměru 1s na závod)_")
         else:
             entity = loader.load_runner(reg_no, years)
             if type(entity) is str:
-                show_error(entity)
+                if 'error' in entity:
+                    st.error("Chyba: žádné závody pro závodníka [ " + reg_no + " ] v sezóně [ " + years + " ]")
+                else:
+                    show_error(entity)
             else:
                 load_page_runner(entity)
 
     st.markdown("---")
     st.markdown("_Autor: Ondřej Měšťan (semetrální práce z předmětu BI-PYT na ČVUT FIT)_")
+    st.markdown(f'_Kód je veřejný na mém <a href="https://github.com/mestaond/analyser">GitHubu</a>_', unsafe_allow_html=True)
     st.markdown(f'_Chyby a připomínky pište na mail: <a href="mailto:mestanondrej@seznam.cz">mestanondrej@seznam.cz</a>_', unsafe_allow_html=True)

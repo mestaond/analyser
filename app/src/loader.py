@@ -78,6 +78,7 @@ def load_split_graphs(data: pandas.DataFrame, show_relative: bool, limit: str, f
 def load_runner_graphs(data: pandas.DataFrame, level: int):
     """Creates a graph with results of events of event ``level``"""
     filtered = data[data['Level'].isin(constants.LEVEL_SHORTCUTS[level])]
+    filtered = filtered[filtered['Place'] != 'DISK']
     if filtered.shape[0] > 0:
         return graphs.get_plotly_runner_event_level(filtered, level)
     return ''

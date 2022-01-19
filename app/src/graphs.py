@@ -121,7 +121,6 @@ def get_plotly_splits_relative(splits: pandas.DataFrame, limit: str, filtered: l
 
 def get_plotly_runner_event_level(events: pandas.DataFrame, level: int) -> go.Figure:
     data = events.copy()
-    data = data[data['Place'] != 'DISK']
     data['Date'] = data['Date'].apply(lambda x: to_date(x))
     data['Place'] = data['Place'].apply(lambda x: int(x.split('.')[0]))
     disciplines = [data[data['Discipline'] == 'SP'], data[data['Discipline'] == 'KT'], data[data['Discipline'] == 'KL']]
