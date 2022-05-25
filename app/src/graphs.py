@@ -48,7 +48,7 @@ def get_plotly_splits_prepare_data(splits: pandas.DataFrame, limit: str, filtere
     data = data.drop('RegNo', axis=1)
     data = data.rename(columns=lambda x: re.sub('TotalTime', 'K', x))
     data = data.rename(columns=lambda x: re.sub('K999', 'F', x))
-    data = data[data.F != 'DISK']
+    data = data[(data.F != 'DISK') & (data.F != 'DNS')]
     runners = data.index.to_list()
     names = data['ResName'].copy()
     data.rename(columns={'ResName': 'S'}, inplace=True)
