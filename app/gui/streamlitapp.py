@@ -43,7 +43,7 @@ def load_page_splits(entity: pandas.DataFrame, category: str):
     filtered = loader.filter_runner_id(runners)
     if filtered:
         limit = 'none'
-    st.write(loader.load_split_graphs(entity, show_relative, limit, filtered))
+    st.plotly_chart(loader.load_split_graphs(entity, show_relative, limit, filtered), use_container_width=True)
     st.markdown('__Celkové časy a umístění__')
     st.dataframe(loader.crop_and_style(entity, limit, filtered, False))
     st.markdown('__Časy a umístění podle mezičasů__')
@@ -109,7 +109,7 @@ def load_page_runner(entity: pandas.DataFrame):
     for x in range(0, 3):
         graph = loader.load_runner_graphs(entity, x)
         if type(graph) != str:
-            st.write(graph)
+            st.plotly_chart(graph, use_container_width=True)
 
 
 def show_error(error: str):

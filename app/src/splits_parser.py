@@ -59,6 +59,7 @@ def load_categories(event_id: str):
             event_info.append(legend[i] + ': ' + data['Data'][cols[i]])
     event_info.append('Disciplína: ' + data['Data']['Discipline']['NameCZ'])
     df = pd.DataFrame.from_dict(classes, orient='index')
+    df = df[df['Distance'] != '0.00']
     categories = df[['ID', 'Name']].copy()
     df.set_index('ID', inplace=True)
     event_categories = categories.set_index('ID').to_dict('index')
