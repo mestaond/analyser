@@ -7,7 +7,7 @@ import json
 import streamlit as st
 
 
-@st.cache
+#@st.cache
 def load_splits(class_id: str):
     """Sends get request method getSplits and parses data from json to DataFrame\n
     :returns DataFrame or error string"""

@@ -26,7 +26,7 @@ def load_splits(category: str, event_id: str, event_year: str, mask: str, levels
         return load_event_calendar(event_year, mask, levels, all_sports, all_events, True)
 
 
-@st.cache(allow_output_mutation=True)
+#@st.cache(allow_output_mutation=True)
 def load_event_calendar(event_year: str, mask: str, levels: list, all_sports: bool, all_events: bool, drop_date: bool):
     """Parses all given parameters to json and then calls request with these parameters\n
     :returns load_mode, DataFrame/error string"""

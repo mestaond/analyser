@@ -26,7 +26,7 @@ def load_results(reg_no: str, year: str):
     return result, runner_info
 
 
-@st.cache
+#@st.cache
 def load_event_entries(reg_no: str, year: str):
     """Calls request for data of (supported) events, where runner with ``reg_no`` competed in ``year``\n
     :returns string with json/error message, runner info and user_id as string"""
@@ -55,7 +55,7 @@ def load_event_entries(reg_no: str, year: str):
     return entries, runner_info, user_id
 
 
-@st.cache
+#@st.cache
 def get_all_standings(entries: pandas.DataFrame, events: pandas.DataFrame, user_id: str):
     """Fills ``entries`` DataFrame with results of all events\n
     For two-day championships, only final day is loaded\n
