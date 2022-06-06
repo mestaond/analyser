@@ -67,31 +67,6 @@ def load_categories(event_id: str):
     return df[['Name', 'Distance', 'Climbing', 'Controls']], event_info, event_categories
 
 
-def load_events_parse_data(year: str, mask: str, levels: list, all_sports: bool, all_events: bool):
-    """Creates a dictionary of URL parameters for event loading\n
-    May show ``all_sports`` or only Foot-O, ``all events`` with unofficial ones or just official,
-    only some event ``levels``, events with ``mask`` name and in given ``year``\n
-    :returns dictionary of ``values``"""
-    values = {'format': 'json',
-              'method': 'getEventList',
-              'datefrom': year + '-01-01',
-              'dateto': year + '-12-31'}
-    if all_events:
-        values['all'] = '1'
-    else:
-        values['all'] = '0'
-    if not all_sports:
-        values['sport'] = '1'
-    if mask != '':
-        values['name'] = mask
-    if len(levels) != 0:
-        arr = []
-        for i in levels:
-            arr.append(i.split(':')[0])
-        values['level'] = ",".join(arr)
-    return values
-
-
 def reformat_date(x: str) -> str:
     """Transforms string text in date value"""
     p = x.split('-')

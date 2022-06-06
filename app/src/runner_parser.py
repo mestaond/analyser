@@ -16,7 +16,7 @@ def load_results(reg_no: str, year: str):
         return entries, []
 
     df = pd.DataFrame.from_dict(entries, orient='index')
-    tmp, events = loader.load_event_calendar(year, '', [], False, True, False)
+    tmp, events = loader.load_event_calendar(year, '', [], False, True, True, False)
     df = df[['EventID', 'ClassID', 'ClassDesc']]
     df['idx'] = df['EventID']
     df.set_index('idx', inplace=True)

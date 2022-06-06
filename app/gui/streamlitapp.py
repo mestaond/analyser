@@ -1,5 +1,6 @@
 import base64
 import pandas
+from datetime import date
 import streamlit as st
 
 from app.gui import pdf_creator
@@ -85,6 +86,9 @@ def splits_layout():
     event_year = st.sidebar.selectbox(
         "Sezóna:", options=constants.YEARS
     )
+    whole_season = True
+    if event_year == str(date.today().year):
+        whole_season = st.sidebar.checkbox("Zobrazit celý rok:", help="Výchozí nastavení je předchozích 30 dní", value=False)
     show_advanced = st.sidebar.checkbox("Pokročilé filtry", value=False)
     mask = ''
     levels = []
@@ -98,7 +102,7 @@ def splits_layout():
         )
         all_sports = st.sidebar.checkbox("Zobrazit všechny sporty", value=False, help="Výchozí nastavení je pouze OB")
         all_events = st.sidebar.checkbox("Zobrazit neoficiální akce", value=False)
-    return category, event, event_year, mask, levels, all_sports, all_events
+    return category, event, event_year, mask, levels, all_sports, all_events, whole_season
 
 
 def load_page_runner(entity: pandas.DataFrame):
@@ -126,7 +130,7 @@ def main():
     )
     st.sidebar.markdown("""---""")
     if mode == 'Analýza výsledků':
-        category, event, event_year, mask, levels, all_sports, all_events = splits_layout()
+        category, event, event_year, mask, levels, all_sports, all_events, whole_season = splits_layout()
 
         if event != '' and category != '':
             ctg = loader.get_category_id_from_name(category, event)
@@ -134,7 +138,7 @@ def main():
                 show_error(category)
             if ctg != 'err':
                 category = ctg
-        load_mode, entity = loader.load_splits(category, event, event_year, mask, levels, all_sports, all_events)
+        load_mode, entity = loader.load_splits(category, event, event_year, mask, levels, all_sports, all_events, whole_season)
         if type(entity) is str:
             splits_handle_error(entity, mask)
         else:

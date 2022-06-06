@@ -4,11 +4,11 @@ import pandas
 from app.gui import streamlitapp as sapp
 from app.src import runner_parser
 from app.src import constants, splits_parser, graphs
-from datetime import date
+from datetime import date, timedelta
 import streamlit as st
 
 
-def load_splits(category: str, event_id: str, event_year: str, mask: str, levels: list, all_sports: bool, all_events: bool):
+def load_splits(category: str, event_id: str, event_year: str, mask: str, levels: list, all_sports: bool, all_events: bool, whole_season: bool):
     """Calls appropriate DataFrame loader according to provided parameters\n
     :returns load_mode, DataFrame/error string"""
     if category != '':
@@ -23,16 +23,47 @@ def load_splits(category: str, event_id: str, event_year: str, mask: str, levels
         sapp.event_categories = categories
         return constants.MODE_CATEGORIES, entity
     else:
-        return load_event_calendar(event_year, mask, levels, all_sports, all_events, True)
+        return load_event_calendar(event_year, mask, levels, all_sports, all_events, whole_season, True)
+
+
+def load_events_parse_data(year: str, mask: str, levels: list, all_sports: bool, all_events: bool, whole_season: bool):
+    """Creates a dictionary of URL parameters for event loading\n
+    May show ``all_sports`` or only Foot-O, ``all events`` with unofficial ones or just official,
+    only some event ``levels``, events with ``mask`` name and in given ``year``\n
+    :returns dictionary of ``values``"""
+    values = {'format': 'json',
+              'method': 'getEventList'}
+    if whole_season:
+        values['datefrom'] = year + '-01-01'
+        values['dateto'] = year + '-12-31'
+    else:
+        today = date.today()
+        past = today - timedelta(days=30)
+        values['datefrom'] = str(past.year) + '-' + past.strftime('%m') + '-' + past.strftime('%d')
+        values['dateto'] = str(today.year) + '-' + today.strftime('%m') + '-' + today.strftime('%d')
+    if all_events:
+        values['all'] = '1'
+    else:
+        values['all'] = '0'
+    if not all_sports:
+        values['sport'] = '1'
+    if mask != '':
+        values['name'] = mask
+    if len(levels) != 0:
+        arr = []
+        for i in levels:
+            arr.append(i.split(':')[0])
+        values['level'] = ",".join(arr)
+    return values
 
 
 #@st.cache(allow_output_mutation=True)
-def load_event_calendar(event_year: str, mask: str, levels: list, all_sports: bool, all_events: bool, drop_date: bool):
+def load_event_calendar(event_year: str, mask: str, levels: list, all_sports: bool, all_events: bool, whole_season: bool, drop_date: bool):
     """Parses all given parameters to json and then calls request with these parameters\n
     :returns load_mode, DataFrame/error string"""
     if event_year == '':
         event_year = (str(date.today().year))
-    values = splits_parser.load_events_parse_data(event_year, mask, levels, all_sports, all_events)
+    values = load_events_parse_data(event_year, mask, levels, all_sports, all_events, whole_season)
     data = splits_parser.load_events(values)
     if type(data) is pandas.DataFrame:
         if drop_date:
