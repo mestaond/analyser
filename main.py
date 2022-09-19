@@ -10,4 +10,4 @@ if __name__ == '__main__':
         sapp.main()
     else:
         sys.argv = ["streamlit", "run", sys.argv[0]]
-        sys.exit(stcli.main())
+        sys.exit(sapp.main())
