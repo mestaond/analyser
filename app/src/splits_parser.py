@@ -99,5 +99,6 @@ def load_events(values: dict):
     df['Sport'] = df['Sport'].apply(lambda x: x['NameCZ'])
     df['DateStr'] = df['Date']
     df['Date'] = df['Date'].apply(lambda x: reformat_date(x))
+    df['Org'] = df['Org1'].apply(lambda x: x['Abbr'])
     df.reset_index(level=0, inplace=True)
-    return df[['ID', 'Date', 'Name', 'Discipline', 'Level', 'Region', 'Sport', 'DateStr']]
+    return df[['ID', 'Date', 'Name', 'Discipline', 'Level', 'Region', 'Sport', 'DateStr', 'Org']]
