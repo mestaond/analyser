@@ -1,6 +1,5 @@
 from app.gui import streamlitapp as sapp
 import sys
-from streamlit import cli as stcli
 import streamlit
 
 
