@@ -1,5 +1,0 @@
-fpdf
-pandas
-streamlit
-plotly
-kaleido
