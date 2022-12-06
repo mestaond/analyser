@@ -49,11 +49,11 @@ def load_page_splits(entity: pandas.DataFrame, category: str):
     st.dataframe(loader.crop_and_style(entity, limit, filtered, False))
     st.markdown('__Časy a umístění podle mezičasů__')
     st.dataframe(loader.crop_and_style(entity, limit, filtered, True))
-    export_as_pdf = st.button("Exportovat", help="Vygeneruje se pdf, které je poté nutné stáhnout kliknutím na odkaz")
-    if export_as_pdf:
-        pdf = pdf_creator.pdf_with_graph(entity, limit, 'Kategorie: ' + category_text, filtered)
-        html = create_download_link(pdf.output(dest="S").encode("latin-1"), "analysis_" + event_id + "_" + category_text)
-        st.markdown(html, unsafe_allow_html=True)
+    # export_as_pdf = st.button("Exportovat", help="Vygeneruje se pdf, které je poté nutné stáhnout kliknutím na odkaz")
+    # if export_as_pdf:
+    #     pdf = pdf_creator.pdf_with_graph(entity, limit, 'Kategorie: ' + category_text, filtered)
+    #     html = create_download_link(pdf.output(dest="S").encode("latin-1"), "analysis_" + event_id + "_" + category_text)
+    #     st.markdown(html, unsafe_allow_html=True)
 
 
 def splits_handle_error(error: str, mask: str):
