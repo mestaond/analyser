@@ -5,8 +5,8 @@ import streamlit
 
 # inspired by StackOverflow
 if __name__ == '__main__':
-    #if streamlit ._is_running_with_streamlit:
+    if streamlit._is_running_with_streamlit:
         sapp.main()
-    #else:
-        #sys.argv = ["streamlit", "run", sys.argv[0]]
+    else:
+        sys.argv = ["streamlit", "run", sys.argv[0]]
         # sys.exit(sapp.main())
